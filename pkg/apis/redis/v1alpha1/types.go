@@ -140,70 +140,28 @@ type RedisClusterList struct {
 	Items []RedisCluster `json:"items"`
 }
 
+type LeaderElectionConfiguration struct {
+	LeaderElect bool
+	LeaseDuration metav1.Duration
+	RenewDeadline metav1.Duration
+	RetryPeriod metav1.Duration
+	ResourceLock string
+}
+
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type OperatorManagerConfig struct {
 	metav1.TypeMeta
-
-	// Operators is the list of operators to enable or disable
-	// '*' means "all enable by default operators"
-	// 'foo' means "enable 'foo'"
-	// '-foo' means "disable 'foo'"
-	// first item for a particular name wins
 	Operators []string
-
 	ConcurrentRedisClusterSyncs int32
-
-	// cluster create or upgrade timeout(min)
 	ClusterTimeOut int32
-
-	// How long to wait between starting controller managers
 	ControllerStartInterval metav1.Duration
-
 	ResysncPeriod int64
-
-	// leaderElection defines the configuration of leader election client.
 	LeaderElection LeaderElectionConfiguration
-
-	// port is the port that the controller manager's http service runs on.
 	Port int32
-
-	// address is the IP address to serve on (set to 0.0.0.0 for all interface).
 	Address string
-
-	// enableProfiling enables profiling via web interface host:port/debug/pprof
 	EnableProfiling bool
-	//contentType is contentType of requests sent to apiserver
 	ContentType string
-	// kubeAPIQPS is the QPS to use whild talking with kubernetes apiserver
 	KubeAPIQPS float32
-	// kubeAPIBurst is the burst to use while talking with kubernetes apiserver.
 	KubeAPIBurst int32
 }
 
-// LeaderElectionConfiguration defines the configuration of leader election
-// clients for components that can run with leader election enabled.
-type LeaderElectionConfiguration struct {
-	// leaderElect enables a leader election client to gain leadership
-	// before executing the main loop. Enable this when running replicated
-	// components for high availability.
-	LeaderElect bool
-	// leaseDuration is the duration that non-leader candidates will wait
-	// after observing a leadership renewal until attempting to acquire
-	// leadership of a led but unrenewed leader slot. This is effectively the
-	// maximum duration that a leader can be stopped before it is replaced
-	// by another candidate. This is only applicable if leader election is
-	// enabled.
-	LeaseDuration metav1.Duration
-	// renewDeadline is the interval between attempts by the acting master to
-	// renew a leadership slot before it stops leading. This must be less
-	// than or equal to the lease duration. This is only applicable if leader
-	// election is enabled.
-	RenewDeadline metav1.Duration
-	// retryPeriod is the duration the clients should wait between attempting
-	// acquisition and renewal of a leadership. This is only applicable if
-	// leader election is enabled.
-	RetryPeriod metav1.Duration
-	// resourceLock indicates the resource object type that will be used to lock
-	// during leader election cycles.
-	ResourceLock string
-}

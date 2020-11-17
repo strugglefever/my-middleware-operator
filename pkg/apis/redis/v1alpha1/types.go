@@ -131,7 +131,7 @@ type RedisClusterCondition struct {
 	Message string `json:"message,omitempty" protobuf:"bytes,5,opt,name=message"`
 }
 
-// +K8S:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type RedisClusterList struct {
 	metav1.TypeMeta `json:",inline"`
 	// +optional
@@ -141,27 +141,26 @@ type RedisClusterList struct {
 }
 
 type LeaderElectionConfiguration struct {
-	LeaderElect bool
+	LeaderElect   bool
 	LeaseDuration metav1.Duration
 	RenewDeadline metav1.Duration
-	RetryPeriod metav1.Duration
-	ResourceLock string
+	RetryPeriod   metav1.Duration
+	ResourceLock  string
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 type OperatorManagerConfig struct {
 	metav1.TypeMeta
-	Operators []string
+	Operators                   []string
 	ConcurrentRedisClusterSyncs int32
-	ClusterTimeOut int32
-	ControllerStartInterval metav1.Duration
-	ResysncPeriod int64
-	LeaderElection LeaderElectionConfiguration
-	Port int32
-	Address string
-	EnableProfiling bool
-	ContentType string
-	KubeAPIQPS float32
-	KubeAPIBurst int32
+	ClusterTimeOut              int32
+	ControllerStartInterval     metav1.Duration
+	ResysncPeriod               int64
+	LeaderElection              LeaderElectionConfiguration
+	Port                        int32
+	Address                     string
+	EnableProfiling             bool
+	ContentType                 string
+	KubeAPIQPS                  float32
+	KubeAPIBurst                int32
 }
-

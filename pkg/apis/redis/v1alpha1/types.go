@@ -155,7 +155,7 @@ type OperatorManagerConfig struct {
 	ConcurrentRedisClusterSyncs int32
 	ClusterTimeOut              int32
 	ControllerStartInterval     metav1.Duration
-	ResysncPeriod               int64
+	ResyncPeriod                int64
 	LeaderElection              LeaderElectionConfiguration
 	Port                        int32
 	Address                     string

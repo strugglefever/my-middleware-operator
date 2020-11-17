@@ -1,0 +1,61 @@
+apiVersion: redis.middleware.hc.cn/v1alpha1
+kind: RedisCluster
+metadata:
+  name: example000-redis-cluster
+  namespace: kube-system
+spec:
+  replicas: 3
+  pause: true
+  finalizers: foreground
+  repository: library/redis
+  version: 3.2.6
+  updateStrategy:
+    type: AssignReceive
+    pipeline: "100"
+    assignStrategies:
+      -
+       slots: 2000
+       fromReplicas: nodeId1
+      -
+       slots: 1000
+       fromReplicas: nodeId3,nodeId4
+  pod:
+  - labels:
+      key: value
+    annotations:
+      key: value
+    env:
+    - name: DOMAINNAME
+      value: cluster.local
+    - name: MAXMEMROY
+      value: 2gb
+    affinity:
+      nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: HarmonyCloud_status
+            operator: In
+            values:
+            - C
+      podAntAffinity: {}
+    resources:
+      limits:
+        cpu: "2"
+        memory: 1Gi
+      requests:
+        cpu: "1"
+        memory: "1Gi"
+    updateStrategy:
+      type: RollingUpdate
+      volumes:
+      type: nfs
+      persistentVolumeClaimName: example000-redis-cluster-claim
+    # 配置文件模板名
+    configmap: example000-redis-cluster-config
+    # 监控镜像
+    monitorImage: redis-exporter:v1
+    # 初始化镜像
+    initImage: redis-init:v1
+    # 中间件容器镜像
+    middlewareImage: redis-trib:3.2.6  

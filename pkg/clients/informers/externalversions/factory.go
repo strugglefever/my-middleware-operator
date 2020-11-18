@@ -19,6 +19,10 @@ limitations under the License.
 package externalversions
 
 import (
+	reflect "reflect"
+	sync "sync"
+	time "time"
+
 	versioned "github.com/wflysnow/my-middleware-operator/pkg/clients/clientset/versioned"
 	internalinterfaces "github.com/wflysnow/my-middleware-operator/pkg/clients/informers/externalversions/internalinterfaces"
 	redis "github.com/wflysnow/my-middleware-operator/pkg/clients/informers/externalversions/redis"
@@ -26,9 +30,6 @@ import (
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
-	reflect "reflect"
-	sync "sync"
-	time "time"
 )
 
 type sharedInformerFactory struct {
@@ -122,9 +123,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Redis() redis.Interface
+	Cr() redis.Interface
 }
 
-func (f *sharedInformerFactory) Redis() redis.Interface {
+func (f *sharedInformerFactory) Cr() redis.Interface {
 	return redis.New(f, f.namespace, f.tweakListOptions)
 }

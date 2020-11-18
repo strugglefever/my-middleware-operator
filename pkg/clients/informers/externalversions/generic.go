@@ -20,6 +20,7 @@ package externalversions
 
 import (
 	"fmt"
+
 	v1alpha1 "github.com/wflysnow/my-middleware-operator/pkg/apis/redis/v1alpha1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
@@ -53,8 +54,7 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	switch resource {
 	// Group=redis.mkddleware.hc.cn, Version=v1alpha1
 	case v1alpha1.SchemeGroupVersion.WithResource("redisclusters"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Redis().V1alpha1().RedisClusters().Informer()}, nil
-
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cr().V1alpha1().RedisClusters().Informer()}, nil
 	}
 
 	return nil, fmt.Errorf("no informer found for %v", resource)

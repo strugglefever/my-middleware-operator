@@ -60,8 +60,3 @@ func NewOperatorInitializers() map[string]InitFunc {
 func Run(o *options.OperatorManagerServer) error {
 	return nil
 }
-
-func startRedisClusterController(otx OperatorContext) (bool, error) {
-
-	return false, nil
-}
